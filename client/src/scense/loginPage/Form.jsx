@@ -119,7 +119,7 @@ const Form = () => {
     // e.preventDefault();
 
     try {
-      const login = await fetch("https://mern-social-media-app-backend-chi.vercel.app/auth/login", {
+      const login = await fetch("auth/login", {
         headers: {
           "Content-Type": "application/json",
         },
