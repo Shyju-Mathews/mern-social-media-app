@@ -67,7 +67,7 @@ const Form = () => {
   //     formData.append("picturePath", values.picture.name);
 
   //     const register = await fetch(
-  //       "http://localhost:5000/auth/register",
+  //       "https://mern-social-media-app-backend-chi.vercel.app/auth/register",
   //       {
   //         //   headers: {
   //         //     "Content-Type": "application/json",
@@ -98,7 +98,7 @@ const Form = () => {
       }
       formData.append("picturePath", values.picture.name);
 
-      const register = await fetch("http://localhost:5000/auth/register", {
+      const register = await fetch("https://mern-social-media-app-backend-chi.vercel.app/auth/register", {
         method: "POST",
         body: formData,
       });
@@ -118,7 +118,7 @@ const Form = () => {
     // e.preventDefault();
 
     try {
-      const login = await fetch("http://localhost:5000/auth/login", {
+      const login = await fetch("https://mern-social-media-app-backend-chi.vercel.app/auth/login", {
         headers: {
           "Content-Type": "application/json",
         },
