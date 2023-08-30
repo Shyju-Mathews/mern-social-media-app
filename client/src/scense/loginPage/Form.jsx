@@ -114,6 +114,8 @@ const Form = () => {
     }
   };
 
+  fetch.defaults.withCredentials = true;
+
   const login = async (values, onSubmitProps) => {
     // e.preventDefault();
 
