@@ -125,6 +125,7 @@ const Form = () => {
         },
         method: "POST",
         body: JSON.stringify(values),
+        withCredentials: false
       });
 
       const data = await login.json();
