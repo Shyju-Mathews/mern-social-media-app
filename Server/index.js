@@ -29,9 +29,9 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors(
   {
   origin: "https://mern-social-media-app-frontend-theta.vercel.app",
-  // method: ["GET,POST,PUT,DELETE, PATCH"],
-  // credentials: true,
-  // maxAge: 3600
+  method: ["GET,POST,PUT,DELETE, PATCH"],
+  credentials: true,
+  maxAge: 3600
   }
   ));
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
