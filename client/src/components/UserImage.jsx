@@ -10,7 +10,7 @@ const UserImage = ({ image, size = "60px"}) => {
       style={{ objectFit: "cover", borderRadius: "50%"}}
       width={size} height={size}
       alt="user"
-      src={`https://mern-social-media-app-backend-chi.vercel.app/assets/${image}`}
+      src={`https://dream-world-media.onrender.com/assets/${image}`}
       />
     </Box>
   );

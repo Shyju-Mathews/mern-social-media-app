@@ -9,7 +9,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const token = useSelector((state) => state.token);
 
     const getPosts = async () => {
-      const response = await fetch("https://mern-social-media-app-backend-chi.vercel.app/posts", {
+      const response = await fetch("https://dream-world-media.onrender.com/posts", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -18,7 +18,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
     };
 
   const getUserPosts = async () => {
-    const response = await fetch(`https://mern-social-media-app-backend-chi.vercel.app/posts/${userId}/posts`, {
+    const response = await fetch(`https://dream-world-media.onrender.com/posts/${userId}/posts`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

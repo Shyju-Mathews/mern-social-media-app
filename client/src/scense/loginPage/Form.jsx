@@ -67,7 +67,7 @@ const Form = () => {
   //     formData.append("picturePath", values.picture.name);
 
   //     const register = await fetch(
-  //       "https://mern-social-media-app-backend-chi.vercel.app/auth/register",
+  //       "https://dream-world-media.onrender.com/auth/register",
   //       {
   //         //   headers: {
   //         //     "Content-Type": "application/json",
@@ -98,7 +98,7 @@ const Form = () => {
       }
       formData.append("picturePath", values.picture.name);
 
-      const register = await fetch("https://mern-social-media-app-backend-chi.vercel.app/auth/register", {
+      const register = await fetch("https://dream-world-media.onrender.com/auth/register", {
         method: "POST",
         body: formData,
       });
@@ -119,13 +119,13 @@ const Form = () => {
     // e.preventDefault();
 
     try {
-      const login = await fetch("https://mern-social-media-app-backend-chi.vercel.app/auth/login", {
+      const login = await fetch("https://dream-world-media.onrender.com/auth/login", {
         method: "POST",
-        credentials: "include",
+        // credentials: "include",
         headers: {
-          Accept: "application/json",
+          // Accept: "application/json",
           "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true,
+          // "Access-Control-Allow-Credentials": true,
         },
         body: JSON.stringify(values),
       });

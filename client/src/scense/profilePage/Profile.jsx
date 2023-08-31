@@ -16,7 +16,7 @@ const Profile = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   const getUser = async () => {
-    const res = await fetch(`https://mern-social-media-app-backend-chi.vercel.app/users/${userId}`, {
+    const res = await fetch(`https://dream-world-media.onrender.com/users/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
