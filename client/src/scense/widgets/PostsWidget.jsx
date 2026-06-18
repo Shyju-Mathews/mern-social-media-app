@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosts } from "state";
 import PostWidget from "./PostWidget";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
 import WidgetWrapper from "components/WidgetWrapper";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
