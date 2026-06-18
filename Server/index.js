@@ -79,14 +79,28 @@ app.get("/assets/:filename", async (req, res) => {
     }
 
     const filesCollection = mongoose.connection.db.collection("uploads.files");
-    const file = await filesCollection.findOne({ filename: req.params.filename });
+    const requested = req.params.filename;
+
+    // Try multiple strategies to locate the file:
+    // 1) exact filename stored in GridFS
+    // 2) metadata.originalname (client-provided name)
+    // 3) filename suffix match (timestamp-originalname)
+    let file = await filesCollection.findOne({ filename: requested });
+    if (!file) {
+      file = await filesCollection.findOne({ "metadata.originalname": requested });
+    }
+    if (!file) {
+      const regex = new RegExp(`${requested.replace(/[-\\/\\^$*+?.()|[\\]{}]/g, "\\$&")}$$`);
+      file = await filesCollection.findOne({ filename: { $regex: regex } });
+    }
 
     if (!file) {
       return res.status(404).json({ msg: "File not found" });
     }
 
-    const readStream = gfs.openDownloadStreamByName(req.params.filename);
-    res.set("Content-Type", file.contentType || "application/octet-stream");
+    // Stream by _id for reliability
+    const readStream = gfs.openDownloadStream(file._id);
+    res.set("Content-Type", file.contentType || file.metadata?.contentType || "application/octet-stream");
     readStream.on("error", (error) => {
       res.status(500).json({ error: error.message });
     });
