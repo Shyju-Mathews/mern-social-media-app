@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "../../state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
+import { toast } from "react-toastify";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -131,13 +132,27 @@ const Form = () => {
       });
 
       const data = await login.json();
-      onSubmitProps.resetForm();
 
-      if (data) {
+      if (!data.user) {
+        // setError(data.msg);
+        toast(data.msg, {
+          position: "top-right",
+          autoClose: 2000,
+          // hideProgressBar: false,
+          // closeOnClick: true,
+          // pauseOnHover: true,
+          // draggable: true,
+          // progress: undefined,
+          theme: "dark",
+          style: { backgroundColor: "red", color: palette.background.alt },
+        });
+        return null;
+      } else {
         disPatch(setLogin(data));
+        onSubmitProps.resetForm();
         navigate("/home");
-        console.log("Login-------->>>>>", data);
-      }  
+      }
+ 
     } catch (error) {
       console.error(error.message);
     }

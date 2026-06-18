@@ -66,7 +66,9 @@ const PostWidget = ({
           width="100%"
           height="auto"
           alt="post"
-          style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
+          onMouseEnter={(e) => (e.target.style.transform = "scale(1.01)")}
+          onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
+          style={{ borderRadius: "0.75rem", marginTop: "0.75rem", transition: "all 0.3s ease-in-out", cursor: "pointer" }}
           src={`https://dream-world-media.onrender.com/assets/${picturePath}`}
         />
       )}

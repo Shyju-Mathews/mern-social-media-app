@@ -39,6 +39,7 @@ const UserWidget = ({ userId, picturePath }) => {
     getUser();
   }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
+
   if (!user) {
     return null;
   }
@@ -69,8 +70,13 @@ const UserWidget = ({ userId, picturePath }) => {
               color={dark}
               fontWeight="500"
               sx={{
+                fontSize: {
+                  xs: "0.85rem",
+                  sm: "0.9rem",
+                  lg: "1rem",  
+                },
                 "&:hover": {
-                  color: palette.primary.light,
+                  // color: palette.primary.light,
                   cursor: "pointer",
                 },
               }}

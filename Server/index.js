@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import multer from "multer";
+import { GridFsStorage } from "multer-gridfs-storage";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
@@ -37,13 +38,27 @@ app.use(cors());
 //   ));
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
+
 /* FILE STORAGE */
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/assets");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "public/assets");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname);
+//   },
+// });
+
+let gfs;
+const storage = new GridFsStorage({
+  url: process.env.MONGO_URL,
+  file: (req, file) => {
+    const filename = `${Date.now()}-${file.originalname}`;
+    return {
+      filename,
+      bucketName: "uploads",
+      metadata: { originalname: file.originalname },
+    };
   },
 });
 const upload = multer({ storage });
@@ -57,6 +72,30 @@ app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 
+app.get("/assets/:filename", async (req, res) => {
+  try {
+    if (!gfs) {
+      return res.status(503).json({ msg: "File storage not initialized" });
+    }
+
+    const filesCollection = mongoose.connection.db.collection("uploads.files");
+    const file = await filesCollection.findOne({ filename: req.params.filename });
+
+    if (!file) {
+      return res.status(404).json({ msg: "File not found" });
+    }
+
+    const readStream = gfs.openDownloadStreamByName(req.params.filename);
+    res.set("Content-Type", file.contentType || "application/octet-stream");
+    readStream.on("error", (error) => {
+      res.status(500).json({ error: error.message });
+    });
+    readStream.pipe(res);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 5000;
 mongoose
@@ -65,7 +104,10 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("DB connected successfully")
+    console.log("DB connected successfully");
+    gfs = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+      bucketName: "uploads",
+    });
 
     /* ADD DATA ONE TIME */
     // User.insertMany(users);
@@ -73,4 +115,4 @@ mongoose
   })
   .catch((error) => console.log(`${error} did not connect`));
 
-  app.listen(PORT, () => console.log(`Server Running at Port: ${PORT}`));
+app.listen(PORT, () => console.log(`Server Running at Port: ${PORT}`));

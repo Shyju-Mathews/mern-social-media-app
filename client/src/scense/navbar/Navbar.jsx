@@ -50,10 +50,15 @@ const Navbar = () => {
       <FlexBetween gap="1.75rem">
         <Typography
           fontWeight="bold"
-          fontSize="clamp(1rem, 2rem, 2.5rem)"
           color="primary"
           onClick={() => navigate("/home")}
           sx={{
+            fontSize: {
+              xs: "1rem",
+              sm: "1.5rem",
+              // md: "2rem",
+              xl: "2rem",
+            },
             "&:hover": {
               color: "lightskyblue",
               cursor: "pointer"

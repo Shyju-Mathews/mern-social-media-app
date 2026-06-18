@@ -2,28 +2,38 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosts } from "state";
 import PostWidget from "./PostWidget";
+import { Box, Typography, useTheme } from "@mui/material";
+import WidgetWrapper from "components/WidgetWrapper";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
+  const { palette } = useTheme();
+  const medium = palette.neutral.medium;
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
 
-    const getPosts = async () => {
-      const response = await fetch("https://dream-world-media.onrender.com/posts", {
+  const getPosts = async () => {
+    const response = await fetch(
+      "https://dream-world-media.onrender.com/posts",
+      {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
-      });
-      const posts = await response.json();
-      dispatch(setPosts({posts}));
-    };
+      },
+    );
+    const posts = await response.json();
+    dispatch(setPosts({ posts }));
+  };
 
   const getUserPosts = async () => {
-    const response = await fetch(`https://dream-world-media.onrender.com/posts/${userId}/posts`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await fetch(
+      `https://dream-world-media.onrender.com/posts/${userId}/posts`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
       },
-      method: "GET",
-    });
+    );
     const posts = await response.json();
     dispatch(setPosts({ posts }));
   };
@@ -35,6 +45,17 @@ const PostsWidget = ({ userId, isProfile = false }) => {
       getPosts();
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!posts?.length) {
+    return (
+      <WidgetWrapper m="2rem 0" height="50%" display="flex" justifyContent="center" alignItems="center">
+        {/* <Typography variant="h3" color="text.primary">
+          No Posts to Show
+        </Typography> */}
+        <Typography variant="h5" color={medium}>No Posts to Show</Typography>
+      </WidgetWrapper>
+    );
+  }
 
   return (
     <>
@@ -50,7 +71,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
           userPicturePath,
           likes,
           comments,
-}) => (
+        }) => (
           <PostWidget
             key={_id}
             postId={_id}
@@ -63,7 +84,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             likes={likes}
             comments={comments}
           />
-        )
+        ),
       )}
 
       {/* {posts.map((post) => (
