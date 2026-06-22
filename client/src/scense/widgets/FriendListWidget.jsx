@@ -27,6 +27,8 @@ const FriendListWidget = ({ userId }) => {
     getFriends();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  if (Array.isArray(friends) && !friends) return null;
+
   return (
     <WidgetWrapper>
       <Typography
@@ -38,7 +40,7 @@ const FriendListWidget = ({ userId }) => {
         Friend List
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {friends.map((friend, index) => (
+        {Array.isArray(friends) && friends.map((friend, index) => (
           <Friend
             key={index}
             friendId={friend._id}
